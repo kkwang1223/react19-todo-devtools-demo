@@ -1,0 +1,82 @@
+.filter-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.25rem;
+}
+
+.feature-labels {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.pending-indicator {
+  font-size: 0.75rem;
+  color: var(--green);
+  font-family: 'Monaco', 'Consolas', monospace;
+  animation: pulse 0.8s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.filter-bar {
+  display: flex;
+  gap: 0.5rem;
+  transition: opacity 0.2s;
+}
+
+.filter-bar.is-pending {
+  opacity: 0.6;
+}
+
+.filter-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.6rem 0.75rem;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-2);
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+
+.filter-btn:hover {
+  background: var(--surface-3);
+  border-color: var(--border-hover);
+  color: var(--text);
+}
+
+.filter-btn.active {
+  background: var(--green-dim);
+  border-color: var(--green-border);
+  color: #6ee7b7;
+  font-weight: 600;
+}
+
+.filter-emoji {
+  font-size: 0.9rem;
+}
+
+.filter-count {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.05rem 0.45rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  min-width: 22px;
+  text-align: center;
+}
+
+.filter-btn.active .filter-count {
+  background: rgba(16, 185, 129, 0.2);
+}
