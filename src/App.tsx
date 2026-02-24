@@ -1,9 +1,30 @@
-import { useState, useTransition, useDeferredValue, useOptimistic, useRef } from 'react'
+import {
+  useState,
+  useTransition,
+  useDeferredValue,
+  useOptimistic,
+  useRef,
+  Suspense,
+  lazy,
+  Profiler,
+} from 'react'
+import type { ProfilerOnRenderCallback } from 'react'
 import type { Todo, Filter } from './types'
+import { useTodoStats } from './hooks/useTodoStats'
 import AddTodoForm from './components/AddTodoForm'
 import FilterBar from './components/FilterBar'
 import TodoList from './components/TodoList'
+import RenderDemo from './components/RenderDemo'
 import './App.css'
+
+// ✨ React.lazy: StatsPanel을 지연 로딩 (Suspense fallback 시연용)
+// 1.2초 딜레이로 Suspense fallback을 눈으로 확인할 수 있음
+// DevTools: 컴포넌트 우클릭 → "Suspend the selected component" 강제 테스트도 가능
+const LazyStatsPanel = lazy(() =>
+  new Promise<typeof import('./components/StatsPanel')>(resolve =>
+    setTimeout(() => import('./components/StatsPanel').then(resolve), 1200)
+  )
+)
 
 const INITIAL_TODOS: Todo[] = [
   { id: '1', text: 'React 19 새 기능 살펴보기', completed: true, createdAt: new Date() },
@@ -26,6 +47,33 @@ export default function App() {
     todos,
     (state: Todo[], newTodo: Todo) => [{ ...newTodo, isOptimistic: true }, ...state]
   )
+
+  // ✨ useDebugValue: DevTools Components 탭에서 커스텀 훅 값 확인
+  // App 컴포넌트 선택 → Hooks 섹션 → useTodoStats 항목에 레이블 표시됨
+  const stats = useTodoStats(todos)
+
+  // ✨ <Profiler> 컴포넌트: 코드 레벨 렌더 성능 측정
+  // renderStatsRef에 저장 → setState 없이 콘솔 출력만 (무한 루프 방지)
+  const renderStatsRef = useRef({ phase: '-', actual: 0, base: 0, count: 0 })
+  const [profilerDisplay, setProfilerDisplay] = useState(renderStatsRef.current)
+
+  const handleProfilerRender: ProfilerOnRenderCallback = (
+    _id, phase, actualDuration, baseDuration
+  ) => {
+    renderStatsRef.current = {
+      phase,
+      actual: +actualDuration.toFixed(2),
+      base: +baseDuration.toFixed(2),
+      count: renderStatsRef.current.count + 1,
+    }
+    // 콘솔에서도 확인 가능 (DevTools Console 탭)
+    console.log(
+      `%c[⚛ Profiler] TodoList %c${phase}%c  actual: ${actualDuration.toFixed(2)}ms  base: ${baseDuration.toFixed(2)}ms`,
+      'color: #61dafb; font-weight: bold',
+      'color: #a78bfa',
+      'color: #94a3b8'
+    )
+  }
 
   const handleAdd = (todo: Todo) => {
     setTodos(prev => [todo, ...prev])
@@ -72,18 +120,21 @@ export default function App() {
         <h1 className="app-title">
           <span className="react-logo">⚛</span> React 19 Todo
         </h1>
-        <p className="app-subtitle">React Compiler · useActionState · useOptimistic · useTransition · useDeferredValue</p>
+        <p className="app-subtitle">
+          React Compiler · useActionState · useOptimistic · useTransition · useDeferredValue · useDebugValue
+        </p>
       </header>
 
       <main className="app-main">
-        {/* ✨ useActionState + useOptimistic */}
+
+        {/* ── 섹션 1: useActionState + useOptimistic ── */}
         <AddTodoForm
           onAdd={handleAdd}
           addOptimistic={addOptimisticTodo}
           listRef={listRef}
         />
 
-        {/* ✨ useDeferredValue */}
+        {/* ── 섹션 2: useDeferredValue ── */}
         <div className="search-section">
           <div className="feature-label">
             <span className="badge badge-yellow">useDeferredValue</span>
@@ -103,7 +154,7 @@ export default function App() {
           </div>
         </div>
 
-        {/* ✨ useTransition */}
+        {/* ── 섹션 3: useTransition ── */}
         <FilterBar
           filter={filter}
           onFilterChange={handleFilterChange}
@@ -111,14 +162,16 @@ export default function App() {
           counts={counts}
         />
 
-        {/* Todo 목록 */}
-        <TodoList
-          ref={listRef}
-          todos={filteredTodos}
-          onToggle={handleToggle}
-          onDelete={handleDelete}
-          isFiltering={isPending}
-        />
+        {/* ── 섹션 4: <Profiler> 컴포넌트 + React Compiler ── */}
+        <Profiler id="TodoList" onRender={handleProfilerRender}>
+          <TodoList
+            ref={listRef}
+            todos={filteredTodos}
+            onToggle={handleToggle}
+            onDelete={handleDelete}
+            isFiltering={isPending}
+          />
+        </Profiler>
 
         {filteredTodos.length === 0 && (
           <div className="empty-state">
@@ -126,7 +179,67 @@ export default function App() {
             <p>할 일이 없습니다</p>
           </div>
         )}
+
+        {/* ── Profiler 통계 표시 ── */}
+        <div className="profiler-section">
+          <div className="feature-labels">
+            <span className="badge badge-cyan">&lt;Profiler&gt; 컴포넌트</span>
+          </div>
+          <div className="profiler-bar">
+            <div className="profiler-stat">
+              <span className="profiler-key">phase</span>
+              <span className="profiler-val">{profilerDisplay.phase}</span>
+            </div>
+            <div className="profiler-stat">
+              <span className="profiler-key">actual</span>
+              <span className="profiler-val">{profilerDisplay.actual}ms</span>
+            </div>
+            <div className="profiler-stat">
+              <span className="profiler-key">base</span>
+              <span className="profiler-val">{profilerDisplay.base}ms</span>
+            </div>
+            <div className="profiler-stat">
+              <span className="profiler-key">renders</span>
+              <span className="profiler-val">{profilerDisplay.count}회</span>
+            </div>
+            <button
+              className="profiler-refresh-btn"
+              onClick={() => setProfilerDisplay({ ...renderStatsRef.current })}
+            >
+              통계 갱신
+            </button>
+          </div>
+          <p className="profiler-hint">
+            콘솔에서 실시간 확인 가능 · "통계 갱신" 클릭으로 마지막 렌더 결과 표시
+          </p>
+        </div>
+
+        {/* ── 섹션 5: useDebugValue + React.lazy + Suspense ── */}
+        <Suspense fallback={<StatsPanelSkeleton />}>
+          <LazyStatsPanel stats={stats} />
+        </Suspense>
+
+        {/* ── 섹션 6: Highlight Updates + React.memo + displayName ── */}
+        <RenderDemo />
+
       </main>
+    </div>
+  )
+}
+
+// Suspense fallback 컴포넌트
+function StatsPanelSkeleton() {
+  return (
+    <div className="stats-skeleton">
+      <div className="feature-labels">
+        <span className="badge badge-cyan">React.lazy · Suspense</span>
+      </div>
+      <p className="skeleton-label">
+        <span className="skeleton-spinner" /> StatsPanel 로딩 중...
+      </p>
+      <p className="skeleton-hint">
+        💡 DevTools: 컴포넌트 우클릭 → <em>"Suspend the selected component"</em>
+      </p>
     </div>
   )
 }

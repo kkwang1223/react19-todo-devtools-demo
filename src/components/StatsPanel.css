@@ -1,0 +1,125 @@
+.stats-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 1.25rem 1.5rem 1.5rem;
+}
+
+.feature-labels {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.stats-title {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-2);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.9rem;
+}
+
+/* ── Stats Grid ── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.85rem 0.5rem;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+}
+
+.stat-card-purple {
+  background: var(--purple-dim);
+  border-color: var(--purple-border);
+}
+
+.stat-card-yellow {
+  background: var(--yellow-dim);
+  border-color: var(--yellow-border);
+}
+
+.stat-card-green {
+  background: var(--green-dim);
+  border-color: var(--green-border);
+}
+
+.stat-card-cyan {
+  background: var(--cyan-dim);
+  border-color: var(--cyan-border);
+}
+
+.stat-value {
+  font-size: 1.6rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--text);
+}
+
+.stat-label {
+  font-size: 0.72rem;
+  color: var(--text-3);
+  font-weight: 500;
+}
+
+/* ── Progress Bar ── */
+.progress-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.9rem;
+}
+
+.progress-bar-track {
+  flex: 1;
+  height: 6px;
+  background: var(--surface-3);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--cyan));
+  border-radius: 999px;
+  transition: width 0.5s ease;
+}
+
+.progress-label {
+  font-size: 0.78rem;
+  color: var(--text-3);
+  white-space: nowrap;
+  font-family: 'Monaco', 'Consolas', monospace;
+}
+
+/* ── DevTools Hint ── */
+.stats-devtools-hint {
+  font-size: 0.78rem;
+  color: var(--text-3);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.55rem 0.85rem;
+  line-height: 1.5;
+}
+
+.stats-devtools-hint em {
+  color: #c4b5fd;
+  font-style: normal;
+  font-family: 'Monaco', 'Consolas', monospace;
+}

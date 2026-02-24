@@ -1,0 +1,156 @@
+.render-demo-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 1.25rem 1.5rem 1.5rem;
+}
+
+.feature-labels {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+/* ── Header ── */
+.rd-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.rd-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.rd-sub {
+  font-size: 0.8rem;
+  color: var(--text-3);
+  margin-top: 0.2rem;
+}
+
+/* ── Counter Button ── */
+.count-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 1rem;
+  background: var(--surface-3);
+  border: 1px solid var(--border-hover);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+
+.count-btn:hover {
+  background: var(--yellow-dim);
+  border-color: var(--yellow-border);
+  color: #fcd34d;
+}
+
+.count-val {
+  background: rgba(245, 158, 11, 0.2);
+  color: var(--yellow);
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  min-width: 28px;
+  text-align: center;
+}
+
+/* ── Demo Children ── */
+.demo-children {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+@media (max-width: 500px) {
+  .demo-children {
+    grid-template-columns: 1fr;
+  }
+}
+
+.demo-child {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.9rem 1rem;
+  transition: border-color 0.2s;
+}
+
+.demo-child.normal {
+  border-color: rgba(239, 68, 68, 0.25);
+}
+
+.demo-child.memoized {
+  border-color: rgba(16, 185, 129, 0.25);
+}
+
+.demo-child-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.6rem;
+}
+
+.demo-child-name {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-2);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+}
+
+.render-count {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #fca5a5;
+  font-family: 'Monaco', 'Consolas', monospace;
+}
+
+.render-count.memo-count {
+  color: #6ee7b7;
+}
+
+.demo-child-desc {
+  font-size: 0.82rem;
+  color: var(--text-2);
+  margin-bottom: 0.4rem;
+  font-family: 'Monaco', 'Consolas', monospace;
+}
+
+.demo-child-hint {
+  font-size: 0.75rem;
+  color: var(--text-3);
+}
+
+/* ── Tip ── */
+.rd-tip {
+  font-size: 0.8rem;
+  color: var(--text-3);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.9rem;
+  line-height: 1.5;
+}
+
+.rd-tip strong {
+  color: var(--yellow);
+}
+
+.rd-tip em {
+  color: var(--text-2);
+  font-style: normal;
+}
