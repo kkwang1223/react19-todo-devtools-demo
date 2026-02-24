@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm create vite@latest . -- --template react-ts --yes 2>&1)",
+      "Bash(npm install 2>&1)",
+      "Bash(npm view babel-plugin-react-compiler versions --json 2>&1 | tail -20)",
+      "Bash(npm run build 2>&1)",
+      "Bash(git -C /Users/kkwang/study/claude-todo-list status 2>&1)",
+      "Bash(git init && git add README.md .gitignore package.json vite.config.ts tsconfig.json tsconfig.app.json tsconfig.node.json index.html src/ 2>&1)",
+      "Bash(git -C /Users/kkwang/study/claude-todo-list status && git -C /Users/kkwang/study/claude-todo-list log --oneline 2>&1)",
+      "Bash(git add package-lock.json .gitignore && git commit -m \"$\\(cat <<'EOF'\nfeat: React 19 Todo DevTools 시연 앱 초기 구현\n\n- useActionState: form action으로 비동기 제출 상태 관리\n- useOptimistic: 서버 응답 전 낙관적 UI 즉시 반영\n- useTransition: 필터 전환을 낮은 우선순위로 처리\n- useDeferredValue: 검색어 처리 지연으로 타이핑 성능 향상\n- ref as prop: forwardRef 없이 ref 직접 전달 \\(React 19\\)\n- React Compiler: babel-plugin-react-compiler로 자동 메모이제이션 적용\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\nEOF\n\\)\")"
+    ]
+  }
+}
