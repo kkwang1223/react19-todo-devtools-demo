@@ -1,3 +1,5 @@
+"use no memo"
+
 import { useState, memo, useRef } from 'react'
 import './RenderDemo.css'
 
@@ -5,7 +7,7 @@ import './RenderDemo.css'
 // 부모가 리렌더될 때마다 새 객체 참조를 받아 항상 함께 리렌더됨
 function NormalChild({ config }: { config: { label: string } }) {
   const count = useRef(0)
-  count.current++
+  count.current += 1
 
   return (
     <div className="demo-child normal">
@@ -23,7 +25,7 @@ function NormalChild({ config }: { config: { label: string } }) {
 // ✨ displayName: DevTools 트리에서 'Anonymous' 대신 이름 표시
 const MemoChild = memo(function MemoChild({ label }: { label: string }) {
   const count = useRef(0)
-  count.current++
+  count.current += 1
 
   return (
     <div className="demo-child memoized">
@@ -74,7 +76,8 @@ export default function RenderDemo() {
       <div className="rd-tip">
         💡 <strong>DevTools 확인:</strong>{' '}
         Settings → General →{' '}
-        <em>"Highlight updates when components render"</em> 활성화 후 버튼 클릭
+        <em>"Highlight updates when components render"</em> 활성화 후 버튼 클릭.
+        개발 모드(Strict Mode)에서는 렌더가 2회 호출되어 횟수가 2, 4, 6…처럼 나올 수 있음.
       </div>
     </section>
   )
